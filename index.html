@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavigne Wedding Itinerary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; }
+        .serif { font-family: 'Playfair Display', serif; }
+        #map { height: 500px; width: 100%; border-radius: 12px; }
+        .hidden-content { display: none; }
+        .timeline-line { position: absolute; left: 7px; top: 10px; bottom: 0; width: 1px; background: #e2e8f0; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <div id="gate" class="fixed inset-0 z-[100] flex items-center justify-center bg-white transition-opacity duration-500">
+        <div class="text-center px-6 max-w-sm w-full">
+            <h1 class="serif text-3xl mb-8 tracking-wide">Lavigne Wedding</h1>
+            <input type="password" id="pass-input" placeholder="Enter Passphrase" 
+                class="w-full border-b border-slate-300 py-3 px-2 focus:outline-none focus:border-slate-900 transition-all text-center rounded-none bg-transparent">
+            <button onclick="validate()" class="block mt-8 mx-auto text-[10px] tracking-[0.4em] uppercase font-bold hover:text-slate-400 transition-colors">Access Itinerary</button>
+            <p id="err" class="text-red-400 text-[10px] mt-6 tracking-widest uppercase opacity-0 transition-opacity">Access Denied</p>
+        </div>
+    </div>
+
+    <div id="content" class="hidden-content max-w-3xl mx-auto px-6 py-16">
+        <header class="text-center mb-24">
+            <span class="tracking-[0.4em] text-[10px] uppercase text-slate-400 font-bold">The Wedding Weekend</span>
+            <h1 class="serif text-5xl mt-6 mb-4">Brandon & Steph</h1>
+            <p class="serif italic text-slate-500 text-lg">August 28 — 30, 2026</p>
+        </header>
+
+        <section class="mb-24">
+            <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">The Schedule</h2>
+            <div class="space-y-16">
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    <div class="absolute left-0 top-2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10"></div>
+                    <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6">Friday, August 28</p>
+                    <div>
+                        <h3 class="serif text-2xl">Rehearsal & Welcome Party</h3>
+                        <p class="text-slate-700 font-medium">Forest Preserve</p>
+                        <p class="text-slate-500 mt-1 italic text-sm">4:00 PM — 1059 St Charles Rd, Glen Ellyn</p>
+                        <p class="text-[10px] text-green-600 font-bold uppercase mt-2 tracking-tighter italic">Nearby Glen Ellyn Metra (UP-W)</p>
+                    </div>
+                </div>
+
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    <div class="absolute left-0 top-2 w-4 h-4 bg-slate-900 rounded-full z-10"></div>
+                    <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6">Saturday, August 29</p>
+                    <div>
+                        <h3 class="serif text-2xl">The Wedding Ceremony</h3>
+                        <p class="text-slate-700 mt-2 font-medium">Venuti's Wedding & Events</p>
+                        <p class="text-slate-500 text-sm">5:00 PM — 2251 West Lake Street, Addison, IL</p>
+                    </div>
+                </div>
+
+                <div class="relative pl-10">
+                    <div class="absolute left-0 top-2 w-4 h-4 bg-slate-100 border border-slate-300 rounded-full z-10"></div>
+                    <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-4">Weekend Stay</p>
+                    <h3 class="serif text-xl font-medium text-slate-600 italic">Brandon & Steph's Residence</h3>
+                    <p class="text-slate-500 text-sm">2261 Thorntree Ln, Palatine, IL</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="serif text-3xl mb-8 italic text-center">Travel Map</h2>
+            <div id="map" class="shadow-xl border border-slate-100"></div>
+            <div class="mt-8 flex flex-col md:flex-row gap-8 justify-center text-[11px] uppercase tracking-widest font-bold text-slate-500">
+                <div class="flex items-center gap-3"><div class="w-8 h-1 bg-green-500"></div><span>Metra UP-W Line</span></div>
+                <div class="flex items-center gap-3 italic font-normal"><span class="w-3 h-3 rounded-full border border-slate-400 bg-slate-100"></span><span>Train Stations</span></div>
+            </div>
+        </section>
+
+        <footer class="text-center text-slate-300 text-[10px] tracking-[0.3em] uppercase py-10 border-t border-slate-50 mt-20">
+            &copy; 2026 Brandon & Steph
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // SHA-256 VALIDATION
+        async function validate() {
+            const input = document.getElementById('pass-input').value;
+            const msgUint8 = new TextEncoder().encode(input);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // This is the hash for "LavigneWedding"
+            const target = "80a0998f804245648509c31671755913e6144e5f03761899e196623e16799014";
+
+            if (hashHex === target) {
+                document.getElementById('gate').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('gate').style.display = 'none';
+                    document.getElementById('content').classList.remove('hidden-content');
+                    loadMap();
+                }, 500);
+            } else {
+                const err = document.getElementById('err');
+                err.style.opacity = '1';
+                setTimeout(() => err.style.opacity = '0', 2000);
+            }
+        }
+
+        function loadMap() {
+            const map = L.map('map', { scrollWheelZoom: false });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(map);
+
+            const upW = [[41.8824, -87.6403], [41.884, -87.667], [41.885, -87.740], [41.888, -87.880], [41.890, -87.940], [41.8753, -88.0673]];
+            L.polyline(upW, {color: '#22c55e', weight: 4}).addTo(map);
+
+            const points = [
+                { n: "Venuti's", c: [41.936495, -88.046467] },
+                { n: "Forest Preserve", c: [41.8845, -88.0445] },
+                { n: "Brandon & Steph's Residence", c: [42.1285, -88.0264] }
+            ];
+
+            points.forEach(p => L.marker(p.c).addTo(map).bindPopup(`<b>${p.n}</b>`));
+            
+            const hubs = [[41.8824, -87.6403], [41.8787, -87.6403], [41.8753, -88.0673]];
+            hubs.forEach(h => L.circleMarker(h, {radius: 6, color: '#64748b', fillColor: '#fff', fillOpacity: 1}).addTo(map));
+
+            map.fitBounds([...upW, [42.1285, -88.0264]], {padding: [40, 40]});
+        }
+
+        document.getElementById('pass-input').addEventListener('keypress', e => { if (e.key === 'Enter') validate(); });
+    </script>
+</body>
+</html>
