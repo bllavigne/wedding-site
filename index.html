@@ -10,8 +10,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; }
         .serif { font-family: 'Playfair Display', serif; }
-        #map { height: 500px; width: 100%; border-radius: 12px; z-index: 1; }
+        #map { height: 550px; width: 100%; border-radius: 12px; z-index: 1; }
         .timeline-line { position: absolute; left: 7px; top: 10px; bottom: 0; width: 1px; background: #e2e8f0; }
+        .map-link { color: #2563eb; font-weight: 600; text-decoration: underline; font-size: 12px; margin-top: 8px; display: inline-block; }
     </style>
 </head>
 <body class="text-slate-800 antialiased">
@@ -34,7 +35,9 @@
                     <div>
                         <h3 class="serif text-2xl">Rehearsal & Welcome Party</h3>
                         <p class="text-slate-700 font-medium">Forest Preserve</p>
-                        <p class="text-slate-500 mt-1 italic text-sm">4:00 PM — 1059 St Charles Rd, Glen Ellyn, IL</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=1059+St+Charles+Rd+Glen+Ellyn+IL" target="_blank" class="text-slate-500 mt-1 italic text-sm hover:text-blue-600 block transition-colors">
+                            4:00 PM — 1059 St Charles Rd, Glen Ellyn, IL
+                        </a>
                         <p class="text-[10px] text-green-600 font-bold uppercase mt-2 tracking-tighter italic">Via Metra Union Pacific West (UP-W)</p>
                     </div>
                 </div>
@@ -46,15 +49,29 @@
                     <div>
                         <h3 class="serif text-2xl">The Wedding Ceremony</h3>
                         <p class="text-slate-700 mt-2 font-medium">Venuti's Wedding & Events</p>
-                        <p class="text-slate-500 text-sm">5:00 PM — 2251 West Lake Street, Addison, IL</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=2251+West+Lake+Street+Addison+IL" target="_blank" class="text-slate-500 text-sm hover:text-blue-600 block transition-colors">
+                            5:00 PM — 2251 West Lake Street, Addison, IL
+                        </a>
                     </div>
                 </div>
 
                 <div class="relative pl-10">
                     <div class="absolute left-0 top-2 w-4 h-4 bg-slate-100 border border-slate-300 rounded-full z-10"></div>
-                    <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-4">Weekend Stay</p>
-                    <h3 class="serif text-xl font-medium text-slate-600 italic">Brandon & Steph's Residence</h3>
-                    <p class="text-slate-500 text-sm">2261 Thorntree Ln, Palatine, IL 60067</p>
+                    <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-4">Weekend Stays</p>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="serif text-xl font-medium text-slate-600 italic">Brandon & Steph's Residence</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=2261+Thorntree+Ln+Palatine+IL" target="_blank" class="text-slate-500 text-sm hover:text-blue-600 block transition-colors">
+                                2261 Thorntree Ln, Palatine, IL 60067
+                            </a>
+                        </div>
+                        <div>
+                            <h3 class="serif text-xl font-medium text-slate-600 italic">Aundrea's Location</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=828+W+Agatite+Ave+Apt+3+Chicago+IL+60640" target="_blank" class="text-slate-500 text-sm hover:text-blue-600 block transition-colors">
+                                828 W Agatite Ave Apt 3, Chicago, IL 60640
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -70,13 +87,13 @@
                 </div>
                 <div class="flex items-center gap-3 italic font-normal">
                     <span class="w-3 h-3 rounded-full border border-slate-400 bg-slate-100"></span>
-                    <span>Train Hubs</span>
+                    <span>Transit Hubs</span>
                 </div>
             </div>
         </section>
 
         <footer class="text-center text-slate-300 text-[10px] tracking-[0.3em] uppercase py-10 border-t border-slate-50 mt-20">
-            &copy; 2026 Brandon & Steph
+            © 2026 Brandon & Steph
         </footer>
     </div>
 
@@ -88,47 +105,50 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        // ACTUAL UP-W RAIL PATH
         const upWPath = [
-            [41.8824, -87.6403], // Ogilvie
+            [41.8824, -87.6403], 
             [41.884, -87.667],
             [41.885, -87.740], 
             [41.888, -87.880], 
             [41.890, -87.940], 
-            [41.8753, -88.0673]  // Glen Ellyn Stop
+            [41.8753, -88.0673]
         ];
 
-        // Draw UP-W Line
         L.polyline(upWPath, {color: '#22c55e', weight: 4, opacity: 0.8}).addTo(map);
 
-        // Core Venues
         const venues = [
-            { name: "Venuti's", lat: 41.936495, lng: -88.046467 },
-            { name: "Forest Preserve", lat: 41.8845, lng: -88.0445 },
-            { name: "Brandon & Steph's Residence", lat: 42.1285, lng: -88.0264 }
+            { name: "Venuti's", lat: 41.936495, lng: -88.046467, addr: "2251 West Lake Street, Addison, IL" },
+            { name: "Forest Preserve", lat: 41.8845, lng: -88.0445, addr: "1059 St Charles Rd, Glen Ellyn, IL" },
+            { name: "Brandon & Steph's Residence", lat: 42.1285, lng: -88.0264, addr: "2261 Thorntree Ln, Palatine, IL" },
+            { name: "Aundrea's Location", lat: 41.9634, lng: -87.6514, addr: "828 W Agatite Ave Apt 3, Chicago, IL" }
         ];
 
-        // Transit Hubs
+        venues.forEach(v => {
+            const googleLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.addr)}`;
+            L.marker([v.lat, v.lng]).addTo(map)
+                .bindPopup(`
+                    <div style="font-family: 'Inter', sans-serif; min-width: 150px;">
+                        <strong style="font-size: 14px;">${v.name}</strong><br>
+                        <span style="font-size: 11px; color: #666; line-height: 1.4; display: block; margin-top: 4px;">${v.addr}</span>
+                        <a href="${googleLink}" target="_blank" class="map-link">Open in Maps →</a>
+                    </div>
+                `);
+        });
+
         const hubs = [
             { name: "Ogilvie Transportation Center", lat: 41.8824, lng: -87.6403 },
             { name: "Union Station", lat: 41.8787, lng: -87.6403 },
             { name: "Glen Ellyn Metra", lat: 41.8753, lng: -88.0673 }
         ];
 
-        // Add Venue Markers
-        venues.forEach(v => {
-            L.marker([v.lat, v.lng]).addTo(map).bindPopup(`<b>${v.name}</b>`);
-        });
-
-        // Add Station Circles
         hubs.forEach(h => {
             L.circleMarker([h.lat, h.lng], {
                 radius: 6, color: '#64748b', weight: 2, fillColor: '#f8fafc', fillOpacity: 1
             }).addTo(map).bindPopup(`<b>${h.name}</b>`);
         });
 
-        // Fit map to show all points
-        const allPoints = [...upWPath, [42.1285, -88.0264], [41.936495, -88.046467]];
+        // Combined points to ensure the map shows Chicago, Palatine, and Addison
+        const allPoints = [...upWPath, [42.1285, -88.0264], [41.936495, -88.046467], [41.9634, -87.6514]];
         map.fitBounds(allPoints, {padding: [50, 50]});
     </script>
 </body>
