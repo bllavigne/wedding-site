@@ -15,28 +15,41 @@
         .map-link { color: #2563eb; font-weight: 600; text-decoration: underline; font-size: 12px; margin-top: 8px; display: inline-block; }
         .itinerary-item { cursor: pointer; transition: all 0.2s; border-radius: 8px; padding: 8px; margin-left: -8px; }
         .itinerary-item:hover { background-color: #f1f5f9; }
+        
+        /* Tab Styles */
+        .tab-btn { padding: 12px 24px; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.3s; color: #94a3b8; }
+        .tab-btn.active { color: #1e293b; border-bottom: 2px solid #1e293b; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="text-slate-800 antialiased">
 
     <div class="max-w-3xl mx-auto px-6 py-16">
-        <header class="text-center mb-20">
+        <header class="text-center mb-12">
             <span class="tracking-[0.4em] text-[10px] uppercase text-slate-400 font-bold">The Wedding Weekend</span>
             <h1 class="serif text-5xl mt-6 mb-4">Brandon & Steph</h1>
             <p class="serif italic text-slate-500 text-lg">August 28 — 30, 2026</p>
         </header>
 
-        <section class="mb-24">
-            <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">The Schedule</h2>
+        <div class="flex justify-center gap-4 mb-16 border-b border-slate-100">
+            <button class="tab-btn active" onclick="switchTab(event, 'general')">Itinerary</button>
+            <button class="tab-btn" onclick="switchTab(event, 'groomsmen')">Groomsmen</button>
+        </div>
+
+        <div id="general" class="tab-content active mb-24">
+            <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">General Schedule</h2>
             <div class="space-y-16">
                 <div class="relative pl-10">
                     <div class="timeline-line"></div>
                     <div class="absolute left-0 top-2 w-4 h-4 bg-white border-2 border-slate-900 rounded-full z-10"></div>
                     <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-6">Friday, August 28</p>
                     <div class="itinerary-item" onclick="focusMarker('forest')">
-                        <h3 class="serif text-2xl">Rehearsal & Welcome Party</h3>
+                        <h3 class="serif text-2xl">Welcome Party</h3>
                         <p class="text-slate-700 font-medium">Forest Preserve</p>
-                        <p class="text-slate-500 mt-1 italic text-sm">4:00 PM — 1059 St Charles Rd, Glen Ellyn, IL</p>
+                        <p class="text-slate-500 mt-1 italic text-sm">5:00 PM — 1059 St Charles Rd, Glen Ellyn, IL</p>
                     </div>
                 </div>
 
@@ -47,32 +60,71 @@
                     <div class="itinerary-item" onclick="focusMarker('venutis')">
                         <h3 class="serif text-2xl">The Wedding Ceremony</h3>
                         <p class="text-slate-700 mt-2 font-medium">Venuti's Wedding & Events</p>
-                        <p class="text-slate-500 text-sm italic">5:00 PM — 2251 West Lake Street, Addison, IL</p>
+                        <p class="text-slate-500 text-sm italic">5:00 PM — Addison, IL</p>
                     </div>
                 </div>
 
                 <div class="relative pl-10">
                     <div class="absolute left-0 top-2 w-4 h-4 bg-slate-100 border border-slate-300 rounded-full z-10"></div>
                     <p class="font-bold text-xs uppercase tracking-widest text-slate-400 mb-4">Weekend Stays</p>
-                    <div class="space-y-8">
+                    <div class="space-y-6">
+                        <div class="itinerary-item" onclick="focusMarker('jay')">
+                            <h3 class="serif text-xl italic">Jay & Shari’s Airbnb</h3>
+                            <p class="text-slate-500 text-sm">229 Brookhill Ct, Schaumburg, IL</p>
+                        </div>
                         <div class="itinerary-item" onclick="focusMarker('residence')">
-                            <h3 class="serif text-xl font-medium text-slate-600 italic">Brandon & Steph's Residence</h3>
-                            <p class="text-slate-500 text-sm">2261 Thorntree Ln, Palatine, IL 60067</p>
-                        </div>
-                        <div class="itinerary-item" onclick="focusMarker('hotel')">
-                            <h3 class="serif text-xl font-medium text-slate-600 italic">Holiday Inn Express</h3>
-                            <p class="text-slate-500 text-sm">1490 W Lake St, Roselle, IL 60172</p>
-                        </div>
-                        <div class="itinerary-item" onclick="focusMarker('aundrea')">
-                            <h3 class="serif text-xl font-medium text-slate-600 italic">Aundrea's Location</h3>
-                            <p class="text-slate-500 text-sm">828 W Agatite Ave Apt 3, Chicago, IL 60640</p>
+                            <h3 class="serif text-xl italic">Brandon & Steph's Residence</h3>
+                            <p class="text-slate-500 text-sm">Palatine, IL</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <section id="map-section" class="mb-12 pt-10">
+        <div id="groomsmen" class="tab-content mb-24">
+            <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">Groomsmen Timeline</h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200 uppercase text-[10px] tracking-widest text-slate-400">
+                            <th class="py-4 font-bold">Time</th>
+                            <th class="py-4 font-bold">Event</th>
+                            <th class="py-4 font-bold">Location</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('forest')">
+                            <td class="py-6 font-bold text-slate-400 min-w-[100px]">FRI 5:00 PM</td>
+                            <td class="py-6 serif text-lg">Rehearsal</td>
+                            <td class="py-6 text-slate-500 italic">Forest Preserve</td>
+                        </tr>
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-400">FRI 6:00 PM</td>
+                            <td class="py-6 serif text-lg">Optional Welcome Meal</td>
+                            <td class="py-6 text-slate-500 italic text-xs uppercase tracking-tighter">TBD</td>
+                        </tr>
+                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('jay')">
+                            <td class="py-6 font-bold text-slate-900">SAT 10:00 AM</td>
+                            <td class="py-6 serif text-lg font-bold">Arrival / Preparation</td>
+                            <td class="py-6 text-slate-500 italic">Jay & Shari's Airbnb</td>
+                        </tr>
+                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('venutis')">
+                            <td class="py-6 font-bold text-slate-900">SAT 4:00 PM</td>
+                            <td class="py-6 serif text-lg">Wedding Ceremony</td>
+                            <td class="py-6 text-slate-500 italic">Venuti's</td>
+                        </tr>
+                        <tr class="border-b border-slate-200 italic text-slate-400">
+                            <td class="py-6">Midnight</td>
+                            <td class="py-6" colspan="2">End of Celebration</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-widest italic">Note: Table locations are clickable for map view</p>
+        </div>
+
+        <section id="map-section" class="mb-12 pt-10 border-t border-slate-100">
             <h2 class="serif text-3xl mb-8 italic text-center">Location Guide</h2>
             <div id="map" class="shadow-xl border border-slate-100"></div>
             
@@ -99,6 +151,20 @@
         let map;
         const markerStorage = {};
 
+        function switchTab(evt, tabName) {
+            const contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
+            
+            const btns = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+            
+            // Re-invalidate map size when switching tabs in case container shifted
+            if (map) map.invalidateSize();
+        }
+
         const trainIcon = L.icon({
             iconUrl: 'https://img.icons8.com/ios/50/train.png',
             iconSize: [30, 30],
@@ -110,18 +176,10 @@
             map = L.map('map', { scrollWheelZoom: false });
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OSM' }).addTo(map);
 
-            // UP-W Path (Green)
             const upWPath = [[41.8824, -87.6403], [41.885, -87.740], [41.888, -87.880], [41.8753, -88.0673]];
             L.polyline(upWPath, {color: '#22c55e', weight: 4, opacity: 0.7}).addTo(map);
 
-            // MD-W Path (Purple)
-            const mdWPath = [
-                [41.8787, -87.6403], // Union Station
-                [41.910, -87.750], 
-                [41.925, -87.880], 
-                [41.981, -88.083], // Roselle
-                [41.988, -88.136]  // Schaumburg
-            ];
+            const mdWPath = [[41.8787, -87.6403], [41.910, -87.750], [41.925, -87.880], [41.981, -88.083], [41.988, -88.136]];
             L.polyline(mdWPath, {color: '#a855f7', weight: 4, opacity: 0.7}).addTo(map);
 
             const locations = {
@@ -129,18 +187,16 @@
                 forest: { name: "Forest Preserve", lat: 41.8845, lng: -88.0445, addr: "1059 St Charles Rd, Glen Ellyn, IL" },
                 residence: { name: "Brandon & Steph's Residence", lat: 42.1285, lng: -88.0264, addr: "2261 Thorntree Ln, Palatine, IL" },
                 aundrea: { name: "Aundrea's Location", lat: 41.9634, lng: -87.6514, addr: "828 W Agatite Ave Apt 3, Chicago, IL" },
-                hotel: { name: "Holiday Inn Express", lat: 41.9790, lng: -88.1145, addr: "1490 W Lake St, Roselle, IL 60172" }
+                hotel: { name: "Holiday Inn Express", lat: 41.9790, lng: -88.1145, addr: "1490 W Lake St, Roselle, IL 60172" },
+                jay: { name: "Jay & Shari's Airbnb", lat: 41.9902, lng: -88.1132, addr: "229 Brookhill Ct, Schaumburg, IL 60193" }
             };
 
             const hubs = [
-                { name: "Ogilvie Station (UP-W)", lat: 41.8824, lng: -87.6403, addr: "500 W Madison St, Chicago, IL" },
-                { name: "Union Station (MD-W)", lat: 41.8787, lng: -87.6403, addr: "225 S Canal St, Chicago, IL" },
-                { name: "Glen Ellyn Station", lat: 41.8753, lng: -88.0673, addr: "551 Crescent Blvd, Glen Ellyn, IL" },
-                { name: "Roselle Station", lat: 41.9814, lng: -88.0831, addr: "540 Irving Park Rd, Roselle, IL" },
-                { name: "Schaumburg Station", lat: 41.9883, lng: -88.1364, addr: "2000 S Springinsguth Rd, Schaumburg, IL" }
+                { name: "Union Station (MD-W Hub)", lat: 41.8787, lng: -87.6403, addr: "225 S Canal St, Chicago, IL" },
+                { name: "Roselle Station", lat: 41.9814, lng: -88.0831, addr: "Roselle, IL" },
+                { name: "Schaumburg Station", lat: 41.9883, lng: -88.1364, addr: "Schaumburg, IL" }
             ];
 
-            // Add Venue Markers
             Object.keys(locations).forEach(key => {
                 const loc = locations[key];
                 const gLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loc.addr);
@@ -149,11 +205,10 @@
                 markerStorage[key] = m;
             });
 
-            // Add Train Markers
             hubs.forEach(h => {
                 const gLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(h.addr);
                 L.marker([h.lat, h.lng], { icon: trainIcon }).addTo(map)
-                    .bindPopup("<strong>"+h.name+"</strong><br><span style='font-size:11px'>"+h.addr+"</span><br><a href='"+gLink+"' target='_blank' class='map-link'>Directions →</a>");
+                    .bindPopup("<strong>"+h.name+"</strong><br><a href='"+gLink+"' target='_blank' class='map-link'>Directions →</a>");
             });
 
             map.fitBounds([...Object.values(locations).map(l => [l.lat, l.lng]), ...upWPath, ...mdWPath], {padding: [60, 60]});
@@ -165,7 +220,7 @@
                 document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
                 setTimeout(() => {
                     marker.openPopup();
-                    map.setView(marker.getLatLng(), 13);
+                    map.setView(marker.getLatLng(), 14);
                 }, 800);
             }
         }
