@@ -12,17 +12,18 @@
         .serif { font-family: 'Playfair Display', serif; }
         #map { height: 600px; width: 100%; border-radius: 12px; z-index: 1; }
         .timeline-line { position: absolute; left: 7px; top: 10px; bottom: 0; width: 1px; background: #e2e8f0; }
-        .map-link { color: #2563eb; font-weight: 600; text-decoration: underline; font-size: 12px; margin-top: 8px; display: inline-block; }
+        .map-link-btn { color: #2563eb; font-weight: 500; text-decoration: underline; transition: color 0.2s; }
+        .map-link-btn:hover { color: #1e40af; }
         .itinerary-item { cursor: pointer; transition: all 0.2s; border-radius: 8px; padding: 8px; margin-left: -8px; }
         .itinerary-item:hover { background-color: #f1f5f9; }
         
         /* Tab Styles */
-        .tab-btn { padding: 12px 24px; font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.3s; color: #94a3b8; }
+        .tab-btn { padding: 12px 24px; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 2px solid transparent; transition: all 0.3s; color: #94a3b8; }
         .tab-btn.active { color: #1e293b; border-bottom: 2px solid #1e293b; }
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="text-slate-800 antialiased">
@@ -34,11 +35,13 @@
             <p class="serif italic text-slate-500 text-lg">August 28 — 30, 2026</p>
         </header>
 
+        <!-- Tabs -->
         <div class="flex justify-center gap-4 mb-16 border-b border-slate-100">
             <button class="tab-btn active" onclick="switchTab(event, 'general')">Itinerary</button>
             <button class="tab-btn" onclick="switchTab(event, 'groomsmen')">Groomsmen</button>
         </div>
 
+        <!-- General Tab -->
         <div id="general" class="tab-content active mb-24">
             <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">General Schedule</h2>
             <div class="space-y-16">
@@ -49,7 +52,7 @@
                     <div class="itinerary-item" onclick="focusMarker('forest')">
                         <h3 class="serif text-2xl">Welcome Party</h3>
                         <p class="text-slate-700 font-medium">Forest Preserve</p>
-                        <p class="text-slate-500 mt-1 italic text-sm">5:00 PM — 1059 St Charles Rd, Glen Ellyn, IL</p>
+                        <p class="text-slate-500 mt-1 italic text-sm">4:00 PM — Glen Ellyn, IL</p>
                     </div>
                 </div>
 
@@ -70,7 +73,11 @@
                     <div class="space-y-6">
                         <div class="itinerary-item" onclick="focusMarker('jay')">
                             <h3 class="serif text-xl italic">Jay & Shari’s Airbnb</h3>
-                            <p class="text-slate-500 text-sm">229 Brookhill Ct, Schaumburg, IL</p>
+                            <p class="text-slate-500 text-sm">530 Westover Ln, Schaumburg, IL 60193</p>
+                        </div>
+                        <div class="itinerary-item" onclick="focusMarker('steve')">
+                            <h3 class="serif text-xl italic">Steve's Airbnb</h3>
+                            <p class="text-slate-500 text-sm">229 Brookhill Ct, Schaumburg, IL 60193</p>
                         </div>
                         <div class="itinerary-item" onclick="focusMarker('residence')">
                             <h3 class="serif text-xl italic">Brandon & Steph's Residence</h3>
@@ -81,6 +88,7 @@
             </div>
         </div>
 
+        <!-- Groomsmen Tab -->
         <div id="groomsmen" class="tab-content mb-24">
             <h2 class="serif text-3xl mb-12 italic border-b border-slate-100 pb-4">Groomsmen Timeline</h2>
             
@@ -89,41 +97,98 @@
                     <thead>
                         <tr class="border-b border-slate-200 uppercase text-[10px] tracking-widest text-slate-400">
                             <th class="py-4 font-bold">Time</th>
-                            <th class="py-4 font-bold">Event</th>
-                            <th class="py-4 font-bold">Location</th>
+                            <th class="py-4 font-bold">Event & Details</th>
+                            <th class="py-4 font-bold">Location & Address</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm">
-                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('forest')">
-                            <td class="py-6 font-bold text-slate-400 min-w-[100px]">FRI 5:00 PM</td>
-                            <td class="py-6 serif text-lg">Rehearsal</td>
-                            <td class="py-6 text-slate-500 italic">Forest Preserve</td>
-                        </tr>
+                        <!-- Friday -->
                         <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-400">FRI 4:00 PM</td>
+                            <td class="py-6 serif text-lg">Rehearsal</td>
+                            <td class="py-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=1059+St+Charles+Rd+Glen+Ellyn+IL" target="_blank" class="map-link-btn block">
+                                    Forest Preserve<br>
+                                    <span class="text-xs font-normal text-slate-400">1059 St Charles Rd, Glen Ellyn, IL</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-slate-200">
                             <td class="py-6 font-bold text-slate-400">FRI 6:00 PM</td>
-                            <td class="py-6 serif text-lg">Optional Welcome Meal</td>
-                            <td class="py-6 text-slate-500 italic text-xs uppercase tracking-tighter">TBD</td>
+                            <td class="py-6 serif text-lg">Welcome Meal</td>
+                            <td class="py-6 text-slate-400 italic">Location TBD</td>
                         </tr>
-                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('jay')">
-                            <td class="py-6 font-bold text-slate-900">SAT 10:00 AM</td>
-                            <td class="py-6 serif text-lg font-bold">Arrival / Preparation</td>
-                            <td class="py-6 text-slate-500 italic">Jay & Shari's Airbnb</td>
+
+                        <!-- Saturday Schedule -->
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900 min-w-[90px]">SAT 9:30 AM</td>
+                            <td class="py-6">
+                                <div class="serif text-lg font-bold">Grooms Arrival</div>
+                                <p class="text-xs text-slate-500 font-normal mt-1">Bring suit, but do not get fully dressed yet.</p>
+                            </td>
+                            <td class="py-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=530+Westover+Ln+Schaumburg+IL+60193" target="_blank" class="map-link-btn block">
+                                    Jay & Shari's Airbnb<br>
+                                    <span class="text-xs font-normal text-slate-400">530 Westover Ln, Schaumburg, IL 60193</span>
+                                </a>
+                            </td>
                         </tr>
-                        <tr class="border-b border-slate-50 itinerary-item" onclick="focusMarker('venutis')">
-                            <td class="py-6 font-bold text-slate-900">SAT 4:00 PM</td>
-                            <td class="py-6 serif text-lg">Wedding Ceremony</td>
-                            <td class="py-6 text-slate-500 italic">Venuti's</td>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 10:15 AM</td>
+                            <td class="py-6 serif text-lg">Load Decor</td>
+                            <td class="py-6 text-xs text-slate-500 italic">Load decor into vehicles</td>
                         </tr>
-                        <tr class="border-b border-slate-200 italic text-slate-400">
-                            <td class="py-6">Midnight</td>
-                            <td class="py-6" colspan="2">End of Celebration</td>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 10:30 AM</td>
+                            <td class="py-6 serif text-lg">Depart</td>
+                            <td class="py-6 text-xs text-slate-500 italic">Leave for Churchill Woods</td>
+                        </tr>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 10:45 AM</td>
+                            <td class="py-6 serif text-lg">Arrive at Shelter</td>
+                            <td class="py-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=Churchill+Woods+Picnic+Shelter+Glen+Ellyn+IL" target="_blank" class="map-link-btn block">
+                                    Churchill Woods<br>
+                                    <span class="text-xs font-normal text-slate-400">Picnic Shelter</span>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 11:30 AM</td>
+                            <td class="py-6 serif text-lg">Return & Get Ready</td>
+                            <td class="py-6 text-xs text-slate-500 italic">Head back to Airbnb to shower and get dressed</td>
+                        </tr>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 1:00 PM</td>
+                            <td class="py-6 serif text-lg">Car 1 Departs</td>
+                            <td class="py-6 text-xs text-slate-500 italic">Leave for Churchill Woods Picnic Shelter</td>
+                        </tr>
+
+                        <tr class="border-b border-slate-50">
+                            <td class="py-6 font-bold text-slate-900">SAT 1:00 PM</td>
+                            <td class="py-6">
+                                <div class="serif text-lg">Car 2 Departs & Lunch</div>
+                                <p class="text-xs text-slate-500 font-normal mt-1">Pick up lunch from Taqueria Los Comales on the way</p>
+                            </td>
+                            <td class="py-6">
+                                <a href="https://www.google.com/maps/search/?api=1&query=719+E+Roosevelt+Rd+Lombard+IL+60148" target="_blank" class="map-link-btn block">
+                                    Taqueria Los Comales<br>
+                                    <span class="text-xs font-normal text-slate-400">719 E Roosevelt Rd, Lombard, IL 60148</span>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-widest italic">Note: Table locations are clickable for map view</p>
+            <p class="mt-8 text-center text-[10px] text-slate-400 uppercase tracking-[0.2em]">Click location links to open navigation apps</p>
         </div>
 
+        <!-- Map Section -->
         <section id="map-section" class="mb-12 pt-10 border-t border-slate-100">
             <h2 class="serif text-3xl mb-8 italic text-center">Location Guide</h2>
             <div id="map" class="shadow-xl border border-slate-100"></div>
@@ -135,13 +200,10 @@
                 <div class="flex items-center gap-3 justify-center md:justify-start">
                     <div class="w-8 h-1 bg-purple-500"></div><span>MD-W Line</span>
                 </div>
-                <div class="flex items-center gap-3 justify-center md:col-span-2 italic font-normal">
-                    <img src="https://img.icons8.com/ios/50/000000/train.png" class="w-4 h-4"><span>Train Stations</span>
-                </div>
             </div>
         </section>
 
-        <footer class="text-center text-slate-300 text-[10px] tracking-[0.3em] uppercase py-10 border-t border-slate-50 mt-20">
+        <footer class="text-center text-slate-300 text-[10px] tracking-[0.3em] uppercase py-10">
             © 2026 Brandon & Steph
         </footer>
     </div>
@@ -154,23 +216,12 @@
         function switchTab(evt, tabName) {
             const contents = document.getElementsByClassName("tab-content");
             for (let i = 0; i < contents.length; i++) contents[i].classList.remove("active");
-            
             const btns = document.getElementsByClassName("tab-btn");
             for (let i = 0; i < btns.length; i++) btns[i].classList.remove("active");
-            
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
-            
-            // Re-invalidate map size when switching tabs in case container shifted
             if (map) map.invalidateSize();
         }
-
-        const trainIcon = L.icon({
-            iconUrl: 'https://img.icons8.com/ios/50/train.png',
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
-            popupAnchor: [0, -15]
-        });
 
         function initMap() {
             map = L.map('map', { scrollWheelZoom: false });
@@ -185,30 +236,19 @@
             const locations = {
                 venutis: { name: "Venuti's", lat: 41.936495, lng: -88.046467, addr: "2251 West Lake Street, Addison, IL" },
                 forest: { name: "Forest Preserve", lat: 41.8845, lng: -88.0445, addr: "1059 St Charles Rd, Glen Ellyn, IL" },
+                churchill: { name: "Churchill Woods Picnic Shelter", lat: 41.8732, lng: -88.0498, addr: "Churchill Woods Picnic Shelter, Glen Ellyn, IL" },
+                loscomales: { name: "Taqueria Los Comales", lat: 41.8596, lng: -88.0012, addr: "719 E Roosevelt Rd, Lombard, IL 60148" },
                 residence: { name: "Brandon & Steph's Residence", lat: 42.1285, lng: -88.0264, addr: "2261 Thorntree Ln, Palatine, IL" },
-                aundrea: { name: "Aundrea's Location", lat: 41.9634, lng: -87.6514, addr: "828 W Agatite Ave Apt 3, Chicago, IL" },
-                hotel: { name: "Holiday Inn Express", lat: 41.9790, lng: -88.1145, addr: "1490 W Lake St, Roselle, IL 60172" },
-                jay: { name: "Jay & Shari's Airbnb", lat: 41.9902, lng: -88.1132, addr: "229 Brookhill Ct, Schaumburg, IL 60193" }
+                steve: { name: "Steve's Airbnb", lat: 41.9902, lng: -88.1132, addr: "229 Brookhill Ct, Schaumburg, IL 60193" },
+                jay: { name: "Jay & Shari's Airbnb", lat: 42.0231, lng: -88.1062, addr: "530 Westover Ln, Schaumburg, IL 60193" }
             };
-
-            const hubs = [
-                { name: "Union Station (MD-W Hub)", lat: 41.8787, lng: -87.6403, addr: "225 S Canal St, Chicago, IL" },
-                { name: "Roselle Station", lat: 41.9814, lng: -88.0831, addr: "Roselle, IL" },
-                { name: "Schaumburg Station", lat: 41.9883, lng: -88.1364, addr: "Schaumburg, IL" }
-            ];
 
             Object.keys(locations).forEach(key => {
                 const loc = locations[key];
                 const gLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loc.addr);
                 const m = L.marker([loc.lat, loc.lng]).addTo(map)
-                    .bindPopup("<strong>"+loc.name+"</strong><br><span style='font-size:11px'>"+loc.addr+"</span><br><a href='"+gLink+"' target='_blank' class='map-link'>Open in Google Maps →</a>");
+                    .bindPopup("<strong>"+loc.name+"</strong><br><a href='"+gLink+"' target='_blank' class='map-link-btn'>Navigate</a>");
                 markerStorage[key] = m;
-            });
-
-            hubs.forEach(h => {
-                const gLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(h.addr);
-                L.marker([h.lat, h.lng], { icon: trainIcon }).addTo(map)
-                    .bindPopup("<strong>"+h.name+"</strong><br><a href='"+gLink+"' target='_blank' class='map-link'>Directions →</a>");
             });
 
             map.fitBounds([...Object.values(locations).map(l => [l.lat, l.lng]), ...upWPath, ...mdWPath], {padding: [60, 60]});
@@ -218,10 +258,7 @@
             const marker = markerStorage[id];
             if (marker) {
                 document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
-                setTimeout(() => {
-                    marker.openPopup();
-                    map.setView(marker.getLatLng(), 14);
-                }, 800);
+                setTimeout(() => { marker.openPopup(); map.setView(marker.getLatLng(), 14); }, 600);
             }
         }
 
